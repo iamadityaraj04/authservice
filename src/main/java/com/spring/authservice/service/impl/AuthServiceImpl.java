@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     public UserRegisterResponse userRegister(UserRegisterRequest userRegisterRequest) {
 
         try {
-            UserLoginInfo existingUser = authServiceRepo.findByEmail(userRegisterRequest.email());
+            UserLoginInfo existingUser = authServiceRepo.findByEmail(userRegisterRequest.email().toLowerCase());
 
             if(existingUser != null){
                 return new UserRegisterResponse(false, "Already Exists! Please Login");
