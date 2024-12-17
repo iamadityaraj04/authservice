@@ -4,6 +4,7 @@ import com.spring.authservice.dto.UserRegisterRequest;
 import com.spring.authservice.dto.UserRegisterResponse;
 import com.spring.authservice.service.AuthService;
 import com.spring.authservice.util.BaseResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class AuthServiceController {
     }
 
     @PostMapping("/register")
-    BaseResponse<String> userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
+    BaseResponse<String> userRegister(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         BaseResponse<String> response = new BaseResponse<>();
         UserRegisterResponse userRegisterResponse = authService.userRegister(userRegisterRequest);
         if (userRegisterResponse.isRegistered()){
