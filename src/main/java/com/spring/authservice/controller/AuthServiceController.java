@@ -6,6 +6,7 @@ import com.spring.authservice.service.AuthService;
 import com.spring.authservice.util.BaseResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +21,10 @@ public class AuthServiceController {
     }
 
     @GetMapping("/greet")
-    String greetUser(){
-        return "Hello! Welocome to the Auth Application";
+    BaseResponse<String> greetUser(){
+        BaseResponse<String> response = new BaseResponse<>();
+        String responseMessage = "Hi! Welcome to AuthService";
+            return response.setSuccess(HttpStatus.OK.value(),responseMessage, null);
     }
 
     @PostMapping("/register")
@@ -29,9 +32,9 @@ public class AuthServiceController {
         BaseResponse<String> response = new BaseResponse<>();
         UserRegisterResponse userRegisterResponse = authService.userRegister(userRegisterRequest);
         if (userRegisterResponse.isRegistered()){
-            return response.setSuccess(userRegisterResponse.message(), null);
+            return response.setSuccess(HttpStatus.OK.value(), userRegisterResponse.message(), null);
         }else{
-            return response.setFailure(userRegisterResponse.message(), null);
+            return response.setFailure(HttpStatus.OK.value(), userRegisterResponse.message(), null);
         }
     }
 }
