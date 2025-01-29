@@ -1,5 +1,6 @@
 package com.spring.authservice.model;
 
+import com.spring.authservice.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
@@ -28,4 +29,8 @@ public class UserLoginInfo {
 
     @Column(name = "modified_on")
     private LocalDate modifiedOn;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private UserStatus userStatus;
 }

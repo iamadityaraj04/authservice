@@ -1,8 +1,12 @@
 package com.spring.authservice.service;
 
+import com.spring.authservice.dto.UserInfo;
 import com.spring.authservice.dto.UserRegisterRequest;
-import com.spring.authservice.dto.UserRegisterResponse;
+import com.spring.authservice.util.BaseResponse;
+
+import java.util.List;
 
 public interface AuthService {
-    UserRegisterResponse userRegister(UserRegisterRequest userRegisterRequest);
+    BaseResponse<Object> userRegister(UserRegisterRequest userRegisterRequest);
+    BaseResponse<List<UserInfo>> getAllUsers();
 }
