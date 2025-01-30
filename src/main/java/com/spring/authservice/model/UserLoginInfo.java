@@ -3,7 +3,8 @@ package com.spring.authservice.model;
 import com.spring.authservice.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
+
+import java.time.OffsetDateTime;
 
 @Data
 @Entity
@@ -11,9 +12,8 @@ import java.time.LocalDate;
 public class UserLoginInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userID;
+    private String userId;
 
     @Column(name = "email")
     private String email;
@@ -25,12 +25,15 @@ public class UserLoginInfo {
     private String oldPassword;
 
     @Column(name = "created_on")
-    private LocalDate createdOn;
+    private OffsetDateTime createdOn;
 
     @Column(name = "modified_on")
-    private LocalDate modifiedOn;
+    private OffsetDateTime modifiedOn;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private UserStatus userStatus;
+
+    @Column(name = "last_login_time")
+    private OffsetDateTime lastLoginTime;
 }

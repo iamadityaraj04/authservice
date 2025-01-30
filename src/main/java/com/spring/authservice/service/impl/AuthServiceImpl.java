@@ -1,6 +1,7 @@
 package com.spring.authservice.service.impl;
 
 import com.spring.authservice.dto.UserInfo;
+import com.spring.authservice.dto.UserLoginRequest;
 import com.spring.authservice.dto.UserRegisterRequest;
 import com.spring.authservice.enums.UserStatus;
 import com.spring.authservice.model.UserLoginInfo;
@@ -12,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -43,11 +45,12 @@ public class AuthServiceImpl implements AuthService {
             }
 
             UserLoginInfo userLoginInfo = new UserLoginInfo();
+            userLoginInfo.setUserId(String.valueOf(UUID.randomUUID()));
             userLoginInfo.setEmail(userRegisterRequest.email().toLowerCase());
             userLoginInfo.setPassword(userRegisterRequest.password());
             userLoginInfo.setOldPassword(userRegisterRequest.password());
-            userLoginInfo.setCreatedOn(LocalDate.now());
-            userLoginInfo.setModifiedOn(LocalDate.now());
+            userLoginInfo.setCreatedOn(OffsetDateTime.now());
+            userLoginInfo.setModifiedOn(OffsetDateTime.now());
             userLoginInfo.setUserStatus(UserStatus.ACTIVE);
 
             authServiceRepo.save(userLoginInfo);
@@ -58,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
             );
         }
         catch (Exception e){
-            log.info("Failed Registration: {}",e.getMessage());
+            log.error("Failed Registration: {}",e.getMessage());
             return response.setFailure(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     "Registration Failed",
@@ -67,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
     public BaseResponse<List<UserInfo>> getAllUsers(){
         BaseResponse<List<UserInfo>> response = new BaseResponse<>();
         List<UserLoginInfo> userLoginInfoList = authServiceRepo.findAll();
@@ -82,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         List<UserInfo> userInfoList = new ArrayList<>();
         for (UserLoginInfo userLoginInfo: userLoginInfoList){
             UserInfo userInfo = new UserInfo(
-                    userLoginInfo.getUserID(),
+                    userLoginInfo.getUserId(),
                     userLoginInfo.getEmail(),
                     userLoginInfo.getCreatedOn(),
                     userLoginInfo.getUserStatus()
@@ -95,5 +99,44 @@ public class AuthServiceImpl implements AuthService {
                 "Success",
                 userInfoList
         );
+    }
+
+    @Override
+    public BaseResponse<Object> userLogin(UserLoginRequest userLoginRequest) {
+        BaseResponse<Object> response = new BaseResponse<>();
+
+        UserLoginInfo existingUser = authServiceRepo.findByEmail(userLoginRequest.email().toLowerCase());
+
+        if(existingUser == null){
+            return response.setSuccess(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Account Not Found! Please Register",
+                    null
+            );
+        }
+        if(!userLoginRequest.password().equals(existingUser.getPassword())){
+            return response.setSuccess(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Wrong Credentials! Please try again.",
+                    null
+            );
+        }else{
+            try{
+                int rowAffected = authServiceRepo.updateLoginTime(existingUser.getUserId(), OffsetDateTime.now());
+                if(rowAffected == 1){
+                    log.info("Login time updated for user with ID: {}", existingUser.getUserId());
+                }
+            } catch (Exception e) {
+                log.error("Error occurred while updating user login time for user ID: {}", existingUser.getUserId());
+                throw new RuntimeException(e.getMessage());
+            }
+
+
+            return response.setSuccess(
+                    HttpStatus.OK.value(),
+                    "Congratulations! Logged In Successfully.",
+                    null
+            );
+        }
     }
 }

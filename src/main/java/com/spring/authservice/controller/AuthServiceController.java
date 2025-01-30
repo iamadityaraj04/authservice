@@ -1,6 +1,7 @@
 package com.spring.authservice.controller;
 
 import com.spring.authservice.dto.UserInfo;
+import com.spring.authservice.dto.UserLoginRequest;
 import com.spring.authservice.dto.UserRegisterRequest;
 import com.spring.authservice.service.AuthService;
 import com.spring.authservice.util.BaseResponse;
@@ -38,9 +39,15 @@ public class AuthServiceController {
         return authService.getAllUsers();
     }
 
-    @Operation(summary = "register user")
+    @Operation(summary = "user register")
     @PostMapping("/register")
     BaseResponse<Object> userRegister(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         return authService.userRegister(userRegisterRequest);
+    }
+
+    @Operation(summary = "user login")
+    @PostMapping("/login")
+    BaseResponse<Object> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        return authService.userLogin(userLoginRequest);
     }
 }
