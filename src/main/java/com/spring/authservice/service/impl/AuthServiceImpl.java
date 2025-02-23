@@ -45,7 +45,8 @@ public class AuthServiceImpl implements AuthService {
             }
 
             UserLoginInfo userLoginInfo = new UserLoginInfo();
-            userLoginInfo.setUserId(String.valueOf(UUID.randomUUID()));
+            String userId = String.valueOf(UUID.randomUUID());
+            userLoginInfo.setUserId(userId);
             userLoginInfo.setEmail(userRegisterRequest.email().toLowerCase());
             userLoginInfo.setPassword(userRegisterRequest.password());
             userLoginInfo.setOldPassword(userRegisterRequest.password());
@@ -54,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
             userLoginInfo.setUserStatus(UserStatus.ACTIVE);
 
             authServiceRepo.save(userLoginInfo);
+            log.info("User registered with userId: {} and email: {}", userId, userRegisterRequest.email());
             return response.setSuccess(
                     HttpStatus.CREATED.value(),
                     "Registered Successfully",
@@ -89,6 +91,7 @@ public class AuthServiceImpl implements AuthService {
                     userLoginInfo.getUserId(),
                     userLoginInfo.getEmail(),
                     userLoginInfo.getCreatedOn(),
+                    userLoginInfo.getLastLoginTime(),
                     userLoginInfo.getUserStatus()
                     );
             userInfoList.add(userInfo);

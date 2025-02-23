@@ -7,6 +7,7 @@ public record UserInfo(
         String userId,
         String email,
         OffsetDateTime createdOn,
+        OffsetDateTime lastLoginTime,
         UserStatus status
 ) {
 }
