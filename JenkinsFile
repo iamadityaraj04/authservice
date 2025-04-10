@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Code') {
+            steps {
+                git 'https://github.com/iamadityaraj04/authservice'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Build Running..."
+                sh './gradlew build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Test Running..."
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
+    }
+}
