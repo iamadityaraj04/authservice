@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
             log.info("User registered with userId: {} and email: {}", userId, userRegisterRequest.email());
             return response.setSuccess(
                     HttpStatus.CREATED.value(),
-                    "Registered Successfully",
+                    "User Registered Successfully",
                     null
             );
         }
@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
             log.error("Failed Registration: {}",e.getMessage());
             return response.setFailure(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Registration Failed",
+                    "User Registration Failed",
                     null
             );
         }
@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
 
         if(userLoginInfoList.isEmpty()){
             return response.setSuccess(
-                    HttpStatus.OK.value(),
+                    HttpStatus.NOT_FOUND.value(),
                     "No records found",
                     List.of()
             );
