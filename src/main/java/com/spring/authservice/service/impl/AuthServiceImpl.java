@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
             if(existingUser != null){
                 return response.setSuccess(
                         HttpStatus.CONFLICT.value(),
-                        "Account Already Exists! Please Login",
+                        "Account Already Exists! Please Try To Login",
                         null
                 );
             }
