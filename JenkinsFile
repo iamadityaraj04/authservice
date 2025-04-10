@@ -4,20 +4,21 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/iamadityaraj04/authservice'
+                git 'https://github.com/iamadityaraj04/authservice.git'
             }
         }
 
         stage('Build') {
             steps {
                 echo "Build Running..."
-                sh './gradlew build'
+                sh './gradlew clean build'
             }
         }
 
         stage('Test') {
             steps {
                 echo "Test Running..."
+                sh './gradlew test'
             }
         }
 
