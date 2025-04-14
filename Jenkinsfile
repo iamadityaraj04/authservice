@@ -2,9 +2,11 @@ pipeline {
     agent any
 
      environment {
-        JAR_NAME = 'authservice.jar'
-        DEPLOY_DIR = '/home/ec2-user/authservice'
+         DB_URL = 'jdbc:postgresql://localhost:5432/postgres'
+         DB_USERNAME = 'postgres'
+         DB_PASSWORD = 'postgres'
      }
+
 
     stages {
         stage('Clone Code') {
