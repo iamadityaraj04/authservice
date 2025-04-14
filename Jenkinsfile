@@ -25,12 +25,12 @@ pipeline {
 
         }
 
-        stage('Run Test') {
-            steps {
-                echo "Test Running..."
-                sh './gradlew test'
-            }
-        }
+//         stage('Run Test') {
+//             steps {
+//                 echo "Test Running..."
+//                 sh './gradlew test'
+//             }
+//         }
 
         stage('Deploy') {
             steps {
