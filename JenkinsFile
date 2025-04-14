@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+     environment {
+        JAR_NAME = 'authservice.jar'
+        DEPLOY_DIR = '/home/ec2-user/authservice'
+     }
+
     stages {
         stage('Clone Code') {
             steps {
@@ -8,23 +13,33 @@ pipeline {
             }
         }
 
-        stage('Build') {
+         stage('Run Build') {
             steps {
                 echo "Build Running..."
-//                 sh './gradlew clean build'
+                sh './gradlew clean build'
             }
         }
 
-        stage('Test') {
+        stage('Run Test') {
             steps {
                 echo "Test Running..."
-//                 sh './gradlew test'
+                sh './gradlew test'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+//                 sh '''
+//                     mkdir -p $DEPLOY_DIR
+//                     cp build/libs/*.jar $DEPLOY_DIR/$JAR_NAME
+//
+//                     # Kill existing service (optional)
+//                     pkill -f $JAR_NAME || true
+//
+//                     # Run in background
+//                     nohup java -jar $DEPLOY_DIR/$JAR_NAME > $DEPLOY_DIR/app.log 2>&1 &
+//                 '''
             }
         }
     }
