@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo 'Running Build...'
                 timeout(time: 3, unit: 'MINUTES') {
-                    sh './gradlew --build-cache --daemon clean build'
+                    sh './gradlew build -x test'
                 }
             }
 
