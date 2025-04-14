@@ -13,11 +13,14 @@ pipeline {
             }
         }
 
-         stage('Run Build') {
+         stage('Build') {
             steps {
-                echo "Build Running..."
-                sh './gradlew clean build'
+                echo 'Running Build...'
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh './gradlew --build-cache --daemon clean build'
+                }
             }
+
         }
 
         stage('Run Test') {
