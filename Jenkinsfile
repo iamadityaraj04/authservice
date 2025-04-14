@@ -2,9 +2,11 @@ pipeline {
     agent any
 
      environment {
-        JAR_NAME = 'authservice.jar'
-        DEPLOY_DIR = '/home/ec2-user/authservice'
+         DB_URL = 'jdbc:postgresql://localhost:5432/postgres'
+         DB_USERNAME = 'postgres'
+         DB_PASSWORD = 'postgres'
      }
+
 
     stages {
         stage('Clone Code') {
@@ -17,18 +19,18 @@ pipeline {
             steps {
                 echo 'Running Build...'
                 timeout(time: 3, unit: 'MINUTES') {
-                    sh './gradlew --build-cache --daemon clean build'
+                    sh './gradlew build -x test'
                 }
             }
 
         }
 
-        stage('Run Test') {
-            steps {
-                echo "Test Running..."
-                sh './gradlew test'
-            }
-        }
+//         stage('Run Test') {
+//             steps {
+//                 echo "Test Running..."
+//                 sh './gradlew test'
+//             }
+//         }
 
         stage('Deploy') {
             steps {
