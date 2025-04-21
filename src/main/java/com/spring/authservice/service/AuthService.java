@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface AuthService {
     BaseResponse<Object> userRegister(UserRegisterRequest userRegisterRequest);
+
     BaseResponse<List<UserInfo>> getAllUsers();
+
     BaseResponse<Object> userLogin(UserLoginRequest userLoginRequest);
 }
