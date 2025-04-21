@@ -18,7 +18,7 @@ pipeline {
          stage('Build') {
             steps {
                 echo 'Running Build...'
-                timeout(time: 3, unit: 'MINUTES') {
+                timeout(time: 15, unit: 'MINUTES') {
                     sh './gradlew build -x test'
                 }
             }
