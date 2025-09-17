@@ -52,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
             userLoginInfo.setOldPassword(userRegisterRequest.password());
             userLoginInfo.setCreatedOn(OffsetDateTime.now());
             userLoginInfo.setModifiedOn(OffsetDateTime.now());
+            userLoginInfo.setRoleId(2);
             userLoginInfo.setUserStatus(UserStatus.ACTIVE);
 
             authServiceRepo.save(userLoginInfo);

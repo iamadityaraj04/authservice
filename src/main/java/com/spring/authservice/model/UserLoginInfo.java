@@ -34,6 +34,9 @@ public class UserLoginInfo {
     @Column(name = "status")
     private UserStatus userStatus;
 
+    @Column(name = "role")
+    private int roleId;
+
     @Column(name = "last_login_time")
     private OffsetDateTime lastLoginTime;
 }
